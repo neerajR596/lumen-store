@@ -15,8 +15,6 @@ import settingsRoutes from './routes/settings.js';
 import orderRoutes from './routes/orders.js';
 import paymentRoutes from './routes/payments.js';
 import adminRoutes from './routes/admin.js';
-import Upload from './models/Upload.js';
-import { asyncHandler } from './utils/asyncHandler.js';
 
 export function createApp() {
   const app = express();
@@ -34,14 +32,7 @@ export function createApp() {
   app.use('/api/orders', orderRoutes);
   app.use('/api/payments', paymentRoutes);
   app.use('/api/admin', adminRoutes);
-  app.get('/uploads/:filename', asyncHandler(async (req, res, next) => {
-    const image = await Upload.findOne({ filename: req.params.filename }).select('+data');
-    if (!image) return next();
-    res.set('Cache-Control', 'public, max-age=604800, immutable');
-    res.type(image.contentType).send(image.data);
-  }));
   app.use('/uploads', express.static(path.resolve('uploads'), { maxAge: '7d' }));
-  app.use('/uploads', notFound);
 
   // In production, serve the built React app from the same server.
   const dist = path.resolve('../client/dist');
@@ -54,14 +45,10 @@ export function createApp() {
   return app;
 }
 
-let connectionPromise;
 export async function connectDB(uri = config.mongoUri) {
-  if (mongoose.connection.readyState === 1) return mongoose.connection;
-  if (connectionPromise) return connectionPromise;
   mongoose.set('strictQuery', true);
-  connectionPromise = mongoose.connect(uri, { serverSelectionTimeoutMS: 10000, maxPoolSize: 5 })
-    .catch((error) => { connectionPromise = undefined; throw error; });
-  return connectionPromise;
+  await mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 });
+  console.log(`✓ MongoDB connected: ${mongoose.connection.host}/${mongoose.connection.name}`);
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(new URL(import.meta.url).pathname)) {
