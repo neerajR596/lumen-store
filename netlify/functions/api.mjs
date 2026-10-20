@@ -1,5 +1,15 @@
 import serverless from 'serverless-http';
-import { createApp } from '../../server/src/app.js';
+import mongoose from 'mongoose';
+import { config } from '../../server/src/config.js';
+import { createApp, connectDB } from '../../server/src/index.js';
 
-const app = createApp();
-export const handler = serverless(app);
+let handlerPromise;
+const handler = async (event, context) => {
+  if (!handlerPromise) {
+    handlerPromise = connectDB(config.mongoUri).then(() => serverless(createApp()));
+  }
+  const run = await handlerPromise;
+  return run(event, context);
+};
+
+export { handler };
