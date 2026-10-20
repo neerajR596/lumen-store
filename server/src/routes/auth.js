@@ -21,6 +21,9 @@ r.post('/login', limiter, asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email: String(email || '').toLowerCase() }).select('+password');
   if (!user || !(await user.matchPassword(password || ''))) throw new HttpError(401, 'Incorrect email or password');
+  if (process.env.NETLIFY && user.isAdmin && password === 'admin12345') {
+    throw new HttpError(403, 'Change the default admin password locally before signing in to the deployed store.');
+  }
   res.json({ user: publicUser(user), token: signToken(user) });
 }));
 
