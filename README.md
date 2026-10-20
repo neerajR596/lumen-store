@@ -6,6 +6,8 @@ A full-stack online store built with **MongoDB, Express, React and Node.js**. Th
 
 ## Screenshots
 
+### Storefront
+
 | Showcase banners | "The latest" shelf |
 |---|---|
 | ![Banner](docs/screenshots/home-banner.jpg) | ![Latest](docs/screenshots/home-latest.jpg) |
@@ -14,9 +16,24 @@ A full-stack online store built with **MongoDB, Express, React and Node.js**. Th
 |---|---|
 | ![Shop](docs/screenshots/shop.jpg) | ![Product](docs/screenshots/product.jpg) |
 
-| Admin: overview | Admin: home banners | Admin: storefront editor |
+### Admin dashboard
+
+The dashboard lives at `/admin` and you sign in with an admin account. Every change you make there is saved to MongoDB and shows up in the store straight away.
+
+**Overview:** revenue, orders, customers, product count, a 14-day sales chart, top sellers, recent orders and low-stock alerts.
+![Admin overview](docs/screenshots/admin-dashboard.jpg)
+
+| Products: search, featured/visible switches, edit, delete | Product editor: details, pricing, stock, images, colours, live preview |
+|---|---|
+| ![Admin products](docs/screenshots/admin-products.jpg) | ![Product editor](docs/screenshots/admin-product-editor.jpg) |
+
+| Home banners: add, reorder, show/hide, live preview | Storefront: store name, colour, announcement, hero, delivery and GST |
+|---|---|
+| ![Admin banners](docs/screenshots/admin-banners.jpg) | ![Storefront editor](docs/screenshots/admin-storefront.jpg) |
+
+| Orders: filter by status, view details, change status | Categories | Customers: give or remove admin access |
 |---|---|---|
-| ![Dashboard](docs/screenshots/admin-dashboard.jpg) | ![Banners](docs/screenshots/admin-banners.jpg) | ![Storefront](docs/screenshots/admin-storefront.jpg) |
+| ![Admin orders](docs/screenshots/admin-orders.jpg) | ![Admin categories](docs/screenshots/admin-categories.jpg) | ![Admin customers](docs/screenshots/admin-customers.jpg) |
 
 > 📘 **New here?** Read the full **[Step-by-step guide](docs/GUIDE.md)**: MongoDB Atlas setup, using the admin dashboard, and working on the frontend and backend.
 
