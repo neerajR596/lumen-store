@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import multer from 'multer';
 import path from 'path';
-import fs from 'fs';
+import { randomUUID } from 'node:crypto';
+import Upload from '../models/Upload.js';
 import Order from '../models/Order.js';
 import Product from '../models/Product.js';
 import User from '../models/User.js';
@@ -50,19 +51,17 @@ r.delete('/users/:id', asyncHandler(async (req, res) => {
   res.json({ message: 'User deleted' });
 }));
 
-// Image uploads (stored in server/uploads and served at /uploads/...)
-const dir = path.resolve('uploads'); fs.mkdirSync(dir, { recursive: true });
+// Keep uploads in MongoDB; serverless function disks are temporary.
 const upload = multer({
-  storage: multer.diskStorage({
-    destination: dir,
-    filename: (_req, f, cb) => cb(null, `${Date.now()}-${Math.round(Math.random() * 1e6)}${path.extname(f.originalname).toLowerCase()}`),
-  }),
-  limits: { fileSize: 5 * 1024 * 1024 },
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 3 * 1024 * 1024 },
   fileFilter: (_req, f, cb) => cb(/^image\/(png|jpe?g|webp|gif|avif)$/.test(f.mimetype) ? null : new HttpError(400, 'Images only (png, jpg, webp, gif, avif)'), true),
 });
-r.post('/upload', upload.single('image'), (req, res) => {
+r.post('/upload', upload.single('image'), asyncHandler(async (req, res) => {
   if (!req.file) throw new HttpError(400, 'No file uploaded');
-  res.status(201).json({ url: `/uploads/${req.file.filename}` });
-});
+  const filename = `${randomUUID()}${path.extname(req.file.originalname).toLowerCase()}`;
+  await Upload.create({ filename, contentType: req.file.mimetype, data: req.file.buffer });
+  res.status(201).json({ url: `/uploads/${filename}` });
+}));
 
 export default r;
