@@ -1,3 +1,13 @@
+## Live demo
+
+- **Frontend:** [Open Lumen Store](https://lumen-store-neeraj.netlify.app/)
+- **Admin dashboard:** [Open Lumen Admin](https://lumen-store-neeraj.netlify.app/admin) — requires an admin account.
+- **Backend API:** Render deployment is pending; a verified backend URL will be added after deployment.
+
+> Deployment status: the frontend and admin sign-in page are published. Database connectivity is still being configured, so product images, banners, and sign-in may be unavailable. The screenshots below show the intended appearance.
+
+---
+
 # Lumen: MERN E‑commerce Store
 
 A full-stack online store built with **MongoDB, Express, React and Node.js**. The storefront is clean and Apple-inspired: big type, lots of white space, smooth scroll animations and a frosted-glass navigation bar. An **admin dashboard** lets you change every product, banner and piece of store text without touching code, and checkout supports **Razorpay** online payments and Cash on Delivery.
