@@ -64,7 +64,7 @@ The dashboard lives at `/admin` and you sign in with an admin account. Every cha
 - **Prices are always worked out on the server from the database.** The prices the browser sends are never used.
 - Stock is checked before ordering, reduced on purchase and restored on cancellation
 - **Razorpay:** the server creates the payment order, then checks Razorpay's signature on the result, so a faked payment is rejected
-- Image uploads (up to 5 MB, image files only), stored in `server/uploads`
+- Image uploads (up to 3 MB, image files only), persisted in MongoDB
 - Security headers (Helmet), CORS and clear error messages
 
 ## Tech stack
@@ -189,10 +189,12 @@ lumen-store/
 ```
 
 ## Deploying
+- **Netlify:** import this repository with its root as the base directory. `netlify.toml` builds the React frontend and bundles the Express API as a Netlify Function. Set `MONGO_URI`, a strong `JWT_SECRET`, and `CLIENT_URL` in the project's environment variables. Add Razorpay test keys only when ready to test online payments. API requests and uploaded images are routed to the function; React routes fall back to `index.html`.
+- Uploaded images are stored in MongoDB and survive deployments. Existing local files in `server/uploads` must be uploaded again through the admin dashboard if they were not already hosted externally.
+- The publicly documented default admin password is rejected on Netlify. Change it using the local application's account page before signing in to the deployed admin dashboard.
 - **Single service** (Render, Railway and similar): build command `npm run install-all && npm run build`, start command `npm start`, then add the variables from `.env.example`. Express serves the built React app and the API from the same URL.
 - **Split hosting:** host `client/dist` on Vercel or Netlify with `VITE_API_URL=https://your-api-host`, and set `CLIENT_URL` on the server to your frontend's address.
 - In Atlas → Network Access, allow your host's IP addresses (or `0.0.0.0/0`).
-- Uploaded images are saved on the server's own disk. On hosts that wipe the disk on every redeploy, use image URLs or add a cloud storage service.
 
 ## Notes
 Lumen is a demo / portfolio project. Product photos come from [Unsplash](https://unsplash.com), and the product names are made up.
