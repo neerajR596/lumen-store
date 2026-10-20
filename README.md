@@ -18,6 +18,8 @@ A full-stack online store built with **MongoDB, Express, React and Node.js**. Th
 |---|---|---|
 | ![Dashboard](docs/screenshots/admin-dashboard.jpg) | ![Banners](docs/screenshots/admin-banners.jpg) | ![Storefront](docs/screenshots/admin-storefront.jpg) |
 
+> 📘 **New here?** Read the full **[Step-by-step guide](docs/GUIDE.md)**: MongoDB Atlas setup, using the admin dashboard, and working on the frontend and backend.
+
 ## Features
 
 ### Storefront
@@ -59,6 +61,8 @@ A full-stack online store built with **MongoDB, Express, React and Node.js**. Th
 | Auth | JWT + bcrypt |
 
 ## Getting started
+
+These are the quick steps. For screen-by-screen MongoDB Atlas instructions, see the **[guide](docs/GUIDE.md#1-set-up-mongodb-atlas)**.
 
 ### 1. Requirements
 - Node.js 18 or newer: [nodejs.org](https://nodejs.org)
