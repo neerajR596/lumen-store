@@ -6,6 +6,7 @@ export const errorHandler = (err, req, res, _next) => {
   if (err.name === 'CastError') { status = 404; message = 'Resource not found'; }
   if (err.code === 11000) { status = 400; message = `${Object.keys(err.keyValue || {}).join(', ')} already exists`; }
   if (err.name === 'ValidationError') { status = 400; message = Object.values(err.errors).map((e) => e.message).join(', '); }
+  if (err.code === 'LIMIT_FILE_SIZE') { status = 413; message = 'Images must be 3 MB or smaller.'; }
   if (status >= 500) console.error(err);
   res.status(status).json({ message });
 };
